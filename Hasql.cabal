@@ -32,6 +32,7 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , rel8
   default-language: Haskell2010
 
 executable Hasql-exe
@@ -44,6 +45,7 @@ executable Hasql-exe
   build-depends:
       Hasql
     , base >=4.7 && <5
+    , rel8
   default-language: Haskell2010
 
 test-suite Hasql-test
@@ -57,4 +59,5 @@ test-suite Hasql-test
   build-depends:
       Hasql
     , base >=4.7 && <5
+    , rel8
   default-language: Haskell2010

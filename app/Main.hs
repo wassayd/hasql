@@ -16,10 +16,21 @@ import Rel8
 main :: IO ()
 main = putStrLn "test"
 
+newtype AuthorId = AuthorId { toInt64 :: Int64 }
+  deriving newtype (DBEq, DBType, Eq, Show)
+
+
 data Author f = Author
-  { authorId :: Column f Int64
+  { authorId :: Column f AuthorId
   , name     :: Column f Text
   , url      :: Column f (Maybe Text)
+  }
+  deriving stock (Generic)
+  deriving anyclass (Rel8able)
+
+data Project f = Project
+  { projectAuthorId :: Column f AuthorId
+  , projectName     :: Column f Text
   }
   deriving stock (Generic)
   deriving anyclass (Rel8able)

@@ -65,3 +65,6 @@ packages:
 #
 # Allow a newer minor version of GHC than the snapshot specifies
 # compiler-check: newer-minor
+extra-deps:
+  - 'opaleye-0.8.0.1'
+  - 'rel8-1.2.1.0'
