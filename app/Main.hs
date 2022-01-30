@@ -42,8 +42,6 @@ data Project f = Project
 deriving stock instance f ~ Result => Show (Author f)
 deriving stock instance f ~ Result => Show (Project f)
 
-test = acquire
-
 authorSchema :: TableSchema (Author Name)
 authorSchema = TableSchema
   { name = "author"
