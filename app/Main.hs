@@ -12,6 +12,10 @@
 
 import Prelude
 import Rel8
+import Data.Int (Int64)
+import GHC.Generics ( Generic )
+import Data.Text ( Text )
+import Hasql.Connection
 
 main :: IO ()
 main = putStrLn "test"
@@ -34,3 +38,29 @@ data Project f = Project
   }
   deriving stock (Generic)
   deriving anyclass (Rel8able)
+
+deriving stock instance f ~ Result => Show (Author f)
+deriving stock instance f ~ Result => Show (Project f)
+
+test = acquire
+
+authorSchema :: TableSchema (Author Name)
+authorSchema = TableSchema
+  { name = "author"
+  , schema = Nothing
+  , columns = Author
+      { authorId = "author_id"
+      , name = "name"
+      , url = "url"
+      }
+  }
+
+projectSchema :: TableSchema (Project Name)
+projectSchema = TableSchema
+  { name = "project"
+  , schema = Nothing
+  , columns = Project
+      { projectAuthorId = "author_id"
+      , projectName = "name"
+      }
+  }
