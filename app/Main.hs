@@ -16,9 +16,8 @@ import Data.Int (Int64)
 import GHC.Generics ( Generic )
 import Data.Text ( Text )
 import Hasql.Connection
-
-main :: IO ()
-main = putStrLn "test"
+import qualified Hasql.Connection as Connection
+import qualified Hasql.Session as Session
 
 newtype AuthorId = AuthorId { toInt64 :: Int64 }
   deriving newtype (DBEq, DBType, Eq, Show)
@@ -62,3 +61,11 @@ projectSchema = TableSchema
       , projectName = "name"
       }
   }
+
+ 
+main :: IO ()
+main = do
+  Right connection <- acquire connectionSettings
+  print "connected"
+  where
+    connectionSettings = Connection.settings "localhost" 5432 "postgres" "" "postgres"
