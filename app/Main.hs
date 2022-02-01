@@ -18,6 +18,7 @@ import Data.Text ( Text )
 import Hasql.Connection
 import qualified Hasql.Connection as Connection
 import qualified Hasql.Session as Session
+import qualified Data.ByteString.UTF8 as StrictUTF8 (fromString, toString)
 
 newtype AuthorId = AuthorId { toInt64 :: Int64 }
   deriving newtype (DBEq, DBType, Eq, Show)
@@ -65,7 +66,13 @@ projectSchema = TableSchema
  
 main :: IO ()
 main = do
-  Right connection <- acquire connectionSettings
-  print "connected"
+  connection <- acquire connectionSettings
+  case connection of 
+    Left (Just a) -> error $ StrictUTF8.toString a
+    Left Nothing -> error ""
+    Right connectionRes -> do
+      putStrLn "Acquired connection!"
+      Hasql.Connection.release connectionRes
   where
-    connectionSettings = Connection.settings "localhost" 5432 "postgres" "" "postgres"
+    connectionSettings = Connection.settings "localhost" 5432 "postgres" "root" "postgres"
+  

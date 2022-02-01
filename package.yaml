@@ -25,6 +25,8 @@ dependencies:
 - rel8
 - text
 - hasql 
+- bytestring
+- utf8-string
 
 library:
   source-dirs: src
