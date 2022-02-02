@@ -12,13 +12,10 @@
 
 import Prelude
 import Rel8
-import Data.Int (Int64)
-import GHC.Generics ( Generic )
-import Data.Text ( Text )
+import Data.Text
+import GHC.Generics
+import Data.Int
 import Hasql.Connection
-import qualified Hasql.Connection as Connection
-import qualified Hasql.Session as Session
-import qualified Data.ByteString.UTF8 as StrictUTF8 (fromString, toString)
 
 newtype AuthorId = AuthorId { toInt64 :: Int64 }
   deriving newtype (DBEq, DBType, Eq, Show)
@@ -65,8 +62,9 @@ projectSchema = TableSchema
 
  
 main :: IO ()
-main = do
-  connection <- acquire connectionSettings
+main = undefined 
+{--#
+  do
   case connection of 
     Left (Just a) -> error $ StrictUTF8.toString a
     Left Nothing -> error ""
@@ -75,4 +73,6 @@ main = do
       Hasql.Connection.release connectionRes
   where
     connectionSettings = Connection.settings "localhost" 5432 "postgres" "root" "postgres"
-  
+#--}
+
+connect =  acquire $ settings "localhost" 5432 "postgres" "root" "postgres"
