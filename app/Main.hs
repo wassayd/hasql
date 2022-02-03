@@ -63,16 +63,6 @@ projectSchema = TableSchema
  
 main :: IO ()
 main = undefined 
-{--#
-  do
-  case connection of 
-    Left (Just a) -> error $ StrictUTF8.toString a
-    Left Nothing -> error ""
-    Right connectionRes -> do
-      putStrLn "Acquired connection!"
-      Hasql.Connection.release connectionRes
-  where
-    connectionSettings = Connection.settings "localhost" 5432 "postgres" "root" "postgres"
-#--}
+
 
 connect =  acquire $ settings "localhost" 5432 "postgres" "root" "postgres"
