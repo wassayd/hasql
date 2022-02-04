@@ -65,4 +65,8 @@ main :: IO ()
 main = undefined 
 
 
-connect =  acquire $ settings "localhost" 5432 "postgres" "root" "postgres"
+ 
+connect :: IO Connection
+connect = do  
+  Right conn <- acquire $ settings "localhost" 5432 "postgres" "root" "postgres"
+  return conn
