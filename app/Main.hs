@@ -60,13 +60,18 @@ projectSchema = TableSchema
       }
   }
 
- 
+
 main :: IO ()
 main = undefined 
-
-
  
 connect :: IO Connection
 connect = do  
   Right conn <- acquire $ settings "localhost" 5432 "postgres" "root" "postgres"
   return conn
+
+
+getAllProject :: Query (Project Expr)
+getAllProject = each projectSchema
+
+getAllAuthor :: Query (Author Expr)
+getAllAuthor = each authorSchema
