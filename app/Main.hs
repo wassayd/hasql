@@ -61,9 +61,6 @@ projectSchema = TableSchema
   }
 
 
-main :: IO ()
-main = undefined 
- 
 connect :: IO Connection
 connect = do  
   Right conn <- acquire $ settings "localhost" 5432 "postgres" "root" "postgres"
