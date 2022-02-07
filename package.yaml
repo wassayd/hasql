@@ -27,6 +27,9 @@ dependencies:
 - hasql 
 - bytestring
 - utf8-string
+- hasql-transaction
+- hasql-pool
+- mtl
 
 library:
   source-dirs: src
