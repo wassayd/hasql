@@ -98,7 +98,7 @@ runStatement params stmnt = run (statement params stmnt)
 runInsert :: Connection -> IO()
 runInsert conn = do
   let ins = Insert { into = authorSchema
-                   , rows = values [ lit Author { authorId = AuthorId 4, name = "Scott Sedgwick", url = Nothing } ]
+                   , rows = values [ lit Author { authorId = AuthorId 4, name = "John Doe", url = Nothing } ]
                    , onConflict = Abort
                    , returning = NumberOfRowsAffected
                    }
@@ -110,7 +110,7 @@ runUpdate :: Connection -> IO()
 runUpdate conn = do
   let upd = Update { target = authorSchema
                    , from = getAllAuthor
-                   , set = \_ row -> row { url = litExpr $ Just "https://scott.sedgwick.name" }
+                   , set = \_ row -> row { url = litExpr $ Just "https://www.google.fr/" }
                    , updateWhere = \_ row -> authorId row ==. litExpr (AuthorId 4)
                    , returning = NumberOfRowsAffected
                    }
