@@ -30,9 +30,9 @@ newtype AuthorId = AuthorId { toInt64 :: Int64 }
   deriving newtype (DBEq, DBType, Eq, Show)
 
 data Author f = Author
-  { authorId :: Column f AuthorId
-  , name     :: Column f Text
-  , url      :: Column f (Maybe Text)
+  { author_id :: Column f AuthorId
+  , author_name     :: Column f Text
+  , author_url      :: Column f (Maybe Text)
   }
   deriving stock (Generic)
   deriving anyclass (Rel8able)
@@ -52,9 +52,9 @@ authorSchema = TableSchema
   { name = "author"
   , schema = Nothing
   , columns = Author
-      { authorId = "author_id"
-      , name = "name"
-      , url = "url"
+      { author_id = "author_id"
+      , author_name = "author_name"
+      , author_url = "author_url"
       }
   }
 
@@ -64,7 +64,7 @@ projectSchema = TableSchema
   , schema = Nothing
   , columns = Project
       { projectAuthorId = "author_id"
-      , projectName = "name"
+      , projectName = "project_name"
       }
   }
 
@@ -98,7 +98,7 @@ runStatement params stmnt = run (statement params stmnt)
 runInsert :: Connection -> IO()
 runInsert conn = do
   let ins = Insert { into = authorSchema
-                   , rows = values [ lit Author { authorId = AuthorId 4, name = "John Doe", url = Nothing } ]
+                   , rows = values [ lit Author { author_id = AuthorId 4, author_name = "John Doe", author_url = Nothing } ]
                    , onConflict = Abort
                    , returning = NumberOfRowsAffected
                    }
@@ -110,8 +110,8 @@ runUpdate :: Connection -> IO()
 runUpdate conn = do
   let upd = Update { target = authorSchema
                    , from = getAllAuthor
-                   , set = \_ row -> row { url = litExpr $ Just "https://www.google.fr/" }
-                   , updateWhere = \_ row -> authorId row ==. litExpr (AuthorId 4)
+                   , set = \_ row -> row { author_url = litExpr $ Just "https://www.google.fr/" }
+                   , updateWhere = \_ row -> author_id row ==. litExpr (AuthorId 4)
                    , returning = NumberOfRowsAffected
                    }
   res <- run (statement () (update upd)) conn
@@ -122,7 +122,7 @@ runDelete :: Connection -> IO()
 runDelete conn = do
   let del = Delete { from = authorSchema
                    , using = getAllAuthor
-                   , deleteWhere = \_ row -> authorId row ==. litExpr (AuthorId 4)
+                   , deleteWhere = \_ row -> author_id row ==. litExpr (AuthorId 4)
                    , returning = NumberOfRowsAffected
                    }
   res <- run (statement () (delete del)) conn
