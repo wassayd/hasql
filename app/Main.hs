@@ -25,6 +25,7 @@ import qualified Control.Exception as Servant
 import Hasql.Pool
 import Control.Monad.Reader
 import Hasql.Session
+import Text.Read (readMaybe)
 
 newtype AuthorId = AuthorId { toInt64 :: Int64 }
   deriving newtype (DBEq, DBType, Eq, Show)
@@ -95,10 +96,25 @@ runqry cap qry conn = do
 runStatement :: params -> Statement params result -> Connection -> IO (Either QueryError result)
 runStatement params stmnt = run (statement params stmnt)
 
-runInsert :: Connection -> IO()
-runInsert conn = do
+runInsert :: IO()
+runInsert = do
+  Right conn <- connection
   let ins = Insert { into = authorSchema
                    , rows = values [ lit Author { author_id = AuthorId 4, author_name = "John Doe", author_url = Nothing } ]
+                   , onConflict = Abort
+                   , returning = NumberOfRowsAffected
+                   }
+  res <- runStatement () (insert ins) conn
+  either printErr (printRes "Records inserted: ") res
+  putStrLn "Finished"
+
+createAuthor :: Int64 -> String -> String ->IO()
+createAuthor id name url = do
+  Right conn <- connection
+  let nameConv  = pack name :: Column Result Text
+  let urlConv   = readMaybe url :: Column Result (Maybe Text)
+  let ins = Insert { into = authorSchema
+                   , rows = values [ lit Author { author_id = AuthorId id, author_name = nameConv, author_url = urlConv } ]
                    , onConflict = Abort
                    , returning = NumberOfRowsAffected
                    }
