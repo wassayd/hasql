@@ -122,6 +122,20 @@ createAuthor id name url = do
   either printErr (printRes "Records inserted: ") res
   putStrLn "Finished"
 
+createProject :: Int64 -> String -> IO ()
+createProject authorId prjName = do 
+  Right conn <- connection
+  let nameConv  = pack prjName :: Column Result Text
+  let ins = Insert { into = projectSchema
+                   , rows = values [ lit Project { projectAuthorId = AuthorId authorId, projectName = nameConv  } ]
+                   , onConflict = Abort
+                   , returning = NumberOfRowsAffected
+                   }
+  res <- runStatement () (insert ins) conn
+  either printErr (printRes "Records inserted: ") res
+  putStrLn "Finished"
+
+
 runUpdate :: Connection -> IO()
 runUpdate conn = do
   let upd = Update { target = authorSchema
