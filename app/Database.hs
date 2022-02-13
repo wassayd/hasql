@@ -5,10 +5,14 @@
 {-# language TypeFamilies #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE FlexibleContexts #-}
-
  
- 
-module Connection where
+module Database(
+    dbConnection,
+    runqry,
+    printRes,
+    printErr
+)
+ where
 
 import qualified Hasql.Connection
 import Hasql.Connection

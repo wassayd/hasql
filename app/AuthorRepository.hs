@@ -1,6 +1,12 @@
-module Main where
+module AuthorRepository(
+  authorSchema,
+  getAllAuthor,
+  createAuthor,
+  updateAuthor
+) where
  
-main = undefined
+import Database
+import Classes
 
 authorSchema :: TableSchema (Author Name)
 authorSchema = TableSchema
@@ -20,7 +26,7 @@ getAllAuthor = each authorSchema
 
 createAuthor :: Int64 -> String -> String ->IO()
 createAuthor id name url = do
-  Right conn <- connection
+  Right conn <- dbConnection
   let nameConv  = pack name :: Column Result Text
   let urlConv   = readMaybe url :: Column Result (Maybe Text)
   let ins = Insert { into = authorSchema
@@ -33,11 +39,9 @@ createAuthor id name url = do
   putStrLn "Finished"
 
 
-
-
 updateAuthor :: Int64 -> IO ()
 updateAuthor auth_id =  do
-  Right conn <- connection
+  Right conn <- dbConnection
   let upd = Update { target = authorSchema
                    , from = getAllAuthor
                    , set = \_ row -> row { author_url = litExpr $ Just "https://www.google.fr/" }

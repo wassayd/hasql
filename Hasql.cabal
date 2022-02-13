@@ -45,6 +45,10 @@ library
 executable Hasql-exe
   main-is: Main.hs
   other-modules:
+      AuthorRepository
+      Classes
+      Database
+      ProjectRepository
       Paths_Hasql
   hs-source-dirs:
       app
