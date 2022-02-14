@@ -10,6 +10,7 @@ module Database(
     dbConnection,
     runqry,
     printRes,
+    runStatement,
     printErr
 )
  where

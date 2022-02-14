@@ -1,3 +1,17 @@
+{-# language BlockArguments #-}
+{-# language DeriveAnyClass #-}
+{-# language DeriveGeneric #-}
+{-# language DerivingStrategies #-}
+{-# language DerivingVia #-}
+{-# language DuplicateRecordFields #-}
+{-# language GeneralizedNewtypeDeriving #-}
+{-# language OverloadedStrings #-}
+{-# language StandaloneDeriving #-}
+{-# language TypeApplications #-}
+{-# language TypeFamilies #-}
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE FlexibleContexts #-}
+
 module AuthorRepository(
   authorSchema,
   getAllAuthor,
@@ -7,6 +21,11 @@ module AuthorRepository(
  
 import Database
 import Classes
+import Rel8
+import Data.Int
+import Data.Text
+import Text.Read
+import Hasql.Session
 
 authorSchema :: TableSchema (Author Name)
 authorSchema = TableSchema

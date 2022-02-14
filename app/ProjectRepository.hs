@@ -1,5 +1,17 @@
-{-# LANGUAGE DerivingStrategies #-}
-{-# LANGUAGE StandaloneDeriving #-}
+{-# language BlockArguments #-}
+{-# language DeriveAnyClass #-}
+{-# language DeriveGeneric #-}
+{-# language DerivingStrategies #-}
+{-# language DerivingVia #-}
+{-# language DuplicateRecordFields #-}
+{-# language GeneralizedNewtypeDeriving #-}
+{-# language OverloadedStrings #-}
+{-# language StandaloneDeriving #-}
+{-# language TypeApplications #-}
+{-# language TypeFamilies #-}
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE FlexibleContexts #-}
+
 module ProjectRepository(
   projectSchema,
   getAllProject,
@@ -7,36 +19,15 @@ module ProjectRepository(
   deleteProject
 ) where
 
-import Database
+import Database ( dbConnection, printErr, printRes, runStatement  )
 import Classes
 import GHC.Generics
 import Data.Text
 import Rel8
 import Data.Int
+import Hasql.Session
 
-newtype AuthorId = AuthorId { toInt64 :: Int64 }
-  deriving newtype (DBEq, DBType, Eq, Show)
-
-data Author f = Author
-  { author_id :: Column f AuthorId
-  , author_name     :: Column f Text
-  , author_url      :: Column f (Maybe Text)
-  }
-  deriving stock (Generic)
-  deriving anyclass (Rel8able)
-
-data Project f = Project
-  { projectAuthorId :: Column f AuthorId
-  , projectName     :: Column f Text
-  }
-  deriving stock (Generic)
-  deriving anyclass (Rel8able)
-
-deriving stock instance f ~ Result => Show (Classes.Author f)
-deriving stock instance f ~ Result => Show (Classes.Project f)
-
-
-projectSchema :: TableSchema (Classes.Project Name)
+projectSchema :: TableSchema (Project Name)
 projectSchema = TableSchema
   { name = "project"
   , schema = Nothing
@@ -47,7 +38,7 @@ projectSchema = TableSchema
   }
 
 
-getAllProject :: Query (Classes.Project Expr)
+getAllProject :: Query (Project Expr)
 getAllProject = each projectSchema
 
 
@@ -56,7 +47,7 @@ createProject authorId prjName = do
   Right conn <- dbConnection
   let nameConv  = pack prjName :: Column Result Text
   let ins = Insert { into = projectSchema
-                   , rows = values [ lit Project { projectAuthorId = AuthorId authorId, projectName = nameConv  } ]
+                   , rows = values [ lit Project { projectAuthorId = Classes.AuthorId authorId, projectName = nameConv  } ]
                    , onConflict = Abort
                    , returning = NumberOfRowsAffected
                    }
@@ -68,9 +59,9 @@ createProject authorId prjName = do
 deleteProject :: Int64 -> IO()
 deleteProject auth_id = do
   Right conn <- dbConnection
-  let del = Delete { from = authorSchema
-                   , using = getAllAuthor
-                   , deleteWhere = \_ row -> author_id row ==. litExpr (AuthorId auth_id)
+  let del = Delete { from = projectSchema
+                   , using = getAllProject
+                   , deleteWhere = \_ row -> projectAuthorId row ==. litExpr (Classes.AuthorId auth_id)
                    , returning = NumberOfRowsAffected
                    }
   res <- run (statement () (delete del)) conn

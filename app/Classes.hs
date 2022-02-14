@@ -6,8 +6,9 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module Classes (
-    Author,
-    Project
+    Author(..),
+    Project(..),
+    AuthorId(..)
 ) where
 
 import Rel8
