@@ -5,6 +5,7 @@ import Database (runqry)
 import AuthorRepository (getAllAuthor)
 
  
+main :: IO ()
 main = do
   runqry "Get All Projects :" getAllProject
   runqry "Get All Authors :" getAllAuthor
