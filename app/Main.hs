@@ -4,16 +4,7 @@ import Rel8
 import Database (runqry)
 import AuthorRepository (getAllAuthor)
 import Classes
-
-data Action f = Action{
-    nameAction :: String
-  , fun :: f
-}
  
-availableAction :: Rel8able a => [Action (Query (a Expr))]
-availableAction = [ 
-  Action { nameAction="createPrj", fun = getAllProject }
-  ,Action { nameAction="s", fun = getAllAuthor  } ]
   
 
 isActionAuthorized :: String -> Bool 
