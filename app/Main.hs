@@ -4,8 +4,7 @@ import Rel8
 import Database (runqry)
 import AuthorRepository (getAllAuthor)
 import Classes
- 
-  
+import Data.Maybe (fromMaybe)
 
 isActionAuthorized :: String -> Bool 
 isActionAuthorized "show authors"    = True   
@@ -17,12 +16,14 @@ isActionAuthorized "update project"  = True
 isActionAuthorized "delete author"   = True 
 isActionAuthorized "delete project"  = True
 isActionAuthorized _                 = False    
-
-main :: IO ()
+ 
+main :: Rel8able a => IO (Maybe (Query (a Expr)))
 main = do
   putStr "Agrgument : "
   action <- getLine
   if isActionAuthorized action then 
-    putStrLn "Argument valid"
+    case action of
+      "show autors" -> return  $  Maybe getAllAuthor 
+      _             -> undefined
   else
     putStrLn "Argument invalid"
