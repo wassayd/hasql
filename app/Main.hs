@@ -1,3 +1,17 @@
+{-# language BlockArguments #-}
+{-# language DeriveAnyClass #-}
+{-# language DeriveGeneric #-}
+{-# language DerivingStrategies #-}
+{-# language DerivingVia #-}
+{-# language DuplicateRecordFields #-}
+{-# language GeneralizedNewtypeDeriving #-}
+{-# language OverloadedStrings #-}
+{-# language StandaloneDeriving #-}
+{-# language TypeApplications #-}
+{-# language TypeFamilies #-}
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE FlexibleContexts #-}
+
 module Main where
 import ProjectRepository (getAllProject)
 import Rel8
@@ -17,13 +31,13 @@ isActionAuthorized "delete author"   = True
 isActionAuthorized "delete project"  = True
 isActionAuthorized _                 = False    
  
-main :: Rel8able a => IO (Maybe (Query (a Expr)))
+ 
 main = do
   putStr "Agrgument : "
   action <- getLine
   if isActionAuthorized action then 
     case action of
-      "show autors" -> return  $  Maybe getAllAuthor 
+      "show authors" -> return $ Just getAllAuthor 
       _             -> undefined
   else
     putStrLn "Argument invalid"
