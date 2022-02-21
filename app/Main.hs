@@ -31,13 +31,14 @@ isActionAuthorized "delete author"   = True
 isActionAuthorized "delete project"  = True
 isActionAuthorized _                 = False    
  
- 
+main :: IO ()
 main = do
   putStr "Agrgument : "
   action <- getLine
   if isActionAuthorized action then 
     case action of
-      "show authors" -> return $ Just getAllAuthor 
+      "show authors"  -> runqry "List of all Authors" getAllAuthor
+      "show projects" -> runqry "List of all Authors" getAllProject 
       _             -> undefined
   else
     putStrLn "Argument invalid"
