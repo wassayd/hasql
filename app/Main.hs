@@ -38,7 +38,7 @@ main = do
   if isActionAuthorized action then 
     case action of
       "show authors"  -> runqry "List of all Authors" getAllAuthor
-      "show projects" -> runqry "List of all Authors" getAllProject 
+      "show projects" -> runqry "List of all Projects" getAllProject 
       _             -> undefined
   else
     putStrLn "Argument invalid"
