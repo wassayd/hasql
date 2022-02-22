@@ -28,6 +28,8 @@ runStatement :: params -> Statement params result -> Connection -> IO (Either Qu
 runStatement params stmnt = run (statement params stmnt)
 
 
+-- Run query with a text
+-- ex: runqry "List of all projects" getAllProjects
 runqry :: (Serializable exprs (FromExprs exprs), Show (FromExprs exprs)) => String -> Query exprs -> IO ()
 runqry cap qry = do
     Right conn <- dbConnection
