@@ -21,6 +21,7 @@ import Hasql.Statement
 import Hasql.Session
 import Rel8
 
+-- conect to postgresql db
 dbConnection :: IO (Either ConnectionError Connection)
 dbConnection = Hasql.Connection.acquire "postgresql://postgres:root@127.0.0.1:5432/rel8testing"
 
