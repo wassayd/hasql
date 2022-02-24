@@ -20,7 +20,9 @@ import AuthorRepository (getAllAuthor)
 import Classes
 import Data.Maybe (fromMaybe)
 
-isActionAuthorized :: String -> Bool 
+type Action = String 
+
+isActionAuthorized :: Action -> Bool 
 isActionAuthorized "show authors"    = True   
 isActionAuthorized "show projects"   = True
 isActionAuthorized "create author"   = True   
