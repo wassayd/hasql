@@ -13,10 +13,10 @@
 {-# LANGUAGE FlexibleContexts #-}
 
 module Main where
-import ProjectRepository (getAllProject)
+import ProjectRepository (getAllProject, createProject)
 import Rel8
 import Database (runqry)
-import AuthorRepository (getAllAuthor)
+import AuthorRepository (getAllAuthor, createAuthor)
 import Classes
 import Data.Maybe (fromMaybe)
 
@@ -35,12 +35,36 @@ isActionAuthorized _                 = False
  
 main :: IO ()
 main = do
-  putStr "Agrgument : "
+  putStr "Argument : "
   action <- getLine
   if isActionAuthorized action then 
     case action of
-      "show authors"  -> runqry "List of all Authors" getAllAuthor
-      "show projects" -> runqry "List of all Projects" getAllProject 
-      _             -> undefined
+      "show authors"    -> runqry "List of all Authors" getAllAuthor
+      "show projects"   -> runqry "List of all Projects" getAllProject
+      "create author"   -> createAuthorAction
+      "create project"  -> createAuthorAction
+      _               -> undefined
   else
     putStrLn "Argument invalid"
+
+
+createAuthorAction :: IO ()
+createAuthorAction = do
+  idstr <- inputAction "Author Id"
+  let id = read idstr
+  name <- inputAction "Author name" 
+  url <- inputAction "Author url" 
+  createAuthor id name url
+
+createProjectAction :: IO ()
+createProjectAction = do
+  idstr <- inputAction "Author Id"
+  let authorId = read idstr
+  name <- inputAction "Project Name" 
+  createProject authorId name
+
+
+inputAction :: String -> IO String
+inputAction msg = do
+  putStrLn msg
+  getLine
