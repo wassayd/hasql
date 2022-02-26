@@ -20,10 +20,18 @@ import Hasql.Connection
 import Hasql.Statement
 import Hasql.Session
 import Rel8
+import System.Environment (getEnv)
+import Data.Text.Encoding (encodeUtf8)
+import Data.Text (pack)
+
+connection :: IO String
+connection = getEnv "DB_CON"
 
 -- conect to postgresql db
 dbConnection :: IO (Either ConnectionError Connection)
-dbConnection = Hasql.Connection.acquire "postgresql://postgres:root@127.0.0.1:5432/rel8testing"
+dbConnection = do
+    connStr <- connection
+    Hasql.Connection.acquire ( encodeUtf8 . pack $ connStr)
 
 runStatement :: params -> Statement params result -> Connection -> IO (Either QueryError result)
 runStatement params stmnt = run (statement params stmnt)

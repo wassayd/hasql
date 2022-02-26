@@ -30,6 +30,7 @@ dependencies:
 - hasql-transaction
 - hasql-pool
 - mtl
+- dotenv
 
 library:
   source-dirs: src

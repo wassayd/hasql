@@ -19,6 +19,8 @@ import Database (runqry)
 import AuthorRepository (getAllAuthor, createAuthor)
 import Classes
 import Data.Maybe (fromMaybe)
+import Configuration.Dotenv (loadFile, defaultConfig)
+import System.Environment (getEnv)
 
 type Action = String 
 
