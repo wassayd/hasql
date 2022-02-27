@@ -13,7 +13,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 
 module Main where
-import ProjectRepository (getAllProject, createProject)
+import ProjectRepository (getAllProject, createProject, deleteProject)
 import Rel8
 import Database (runqry)
 import AuthorRepository (getAllAuthor, createAuthor)
@@ -65,6 +65,11 @@ createProjectAction = do
   name <- inputAction "Project Name" 
   createProject authorId name
 
+ 
+deleteProjectAction :: IO ()
+deleteProjectAction = do
+  idstr <- inputAction "Project Id"
+  deleteProject (read idstr) 
 
 inputAction :: String -> IO String
 inputAction msg = do

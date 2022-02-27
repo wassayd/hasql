@@ -70,3 +70,16 @@ updateAuthor auth_id =  do
   res <- run (statement () (update upd)) conn
   either printErr (printRes "Records updated: ") res
   putStrLn "Finished"
+
+
+deleteAuthor :: Int64 -> IO()
+deleteAuthor auth_id = do
+  Right conn <- dbConnection
+  let del = Delete { from = authorSchema
+                   , using = getAllAuthor
+                   , deleteWhere = \_ row -> author_id row ==. litExpr (Classes.AuthorId auth_id)
+                   , returning = NumberOfRowsAffected
+                   }
+  res <- run (statement () (delete del)) conn
+  either printErr (printRes "Records deleted: ") res
+  putStrLn "Finished"

@@ -56,6 +56,21 @@ createProject authorId prjName = do
   putStrLn "Finished"
 
 
+
+updateProject :: Int64 -> IO ()
+updateProject auth_id =  do
+  Right conn <- dbConnection
+  let upd = Update { target = projectSchema
+                   , from = getAllProject
+                   , set = \_ row -> row { projectName = "https://www.google.fr/" }
+                   , updateWhere = \_ row -> projectAuthorId row ==. litExpr (AuthorId auth_id)
+                   , returning = NumberOfRowsAffected
+                   }
+  res <- run (statement () (update upd)) conn
+  either printErr (printRes "Records updated: ") res
+  putStrLn "Finished"
+
+
 deleteProject :: Int64 -> IO()
 deleteProject auth_id = do
   Right conn <- dbConnection
@@ -67,3 +82,4 @@ deleteProject auth_id = do
   res <- run (statement () (delete del)) conn
   either printErr (printRes "Records deleted: ") res
   putStrLn "Finished"
+
