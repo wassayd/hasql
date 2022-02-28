@@ -45,6 +45,7 @@ main = do
       "show projects"   -> runqry "List of all Projects" getAllProject
       "create author"   -> createAuthorAction
       "create project"  -> createAuthorAction
+      "delete project"  -> deleteProjectAction
       _               -> undefined
   else
     putStrLn "Argument invalid"
