@@ -16,7 +16,8 @@ module AuthorRepository(
   authorSchema,
   getAllAuthor,
   createAuthor,
-  updateAuthor
+  updateAuthor,
+  deleteAuthor
 ) where
  
 import Database

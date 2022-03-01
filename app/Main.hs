@@ -16,7 +16,7 @@ module Main where
 import ProjectRepository (getAllProject, createProject, deleteProject)
 import Rel8
 import Database (runqry)
-import AuthorRepository (getAllAuthor, createAuthor)
+import AuthorRepository (getAllAuthor, createAuthor, deleteAuthor)
 import Classes
 import Data.Maybe (fromMaybe)
 import Configuration.Dotenv (loadFile, defaultConfig)
@@ -46,6 +46,7 @@ main = do
       "create author"   -> createAuthorAction
       "create project"  -> createAuthorAction
       "delete project"  -> deleteProjectAction
+      "delete author"  -> deleteProjectAction
       _               -> undefined
   else
     putStrLn "Argument invalid"
@@ -71,6 +72,12 @@ deleteProjectAction :: IO ()
 deleteProjectAction = do
   idstr <- inputAction "Project Id"
   deleteProject (read idstr) 
+
+
+deleteAuthorAction :: IO ()
+deleteAuthorAction = do
+  idstr <- inputAction "Project Id"
+  deleteAuthor (read idstr) 
 
 inputAction :: String -> IO String
 inputAction msg = do
