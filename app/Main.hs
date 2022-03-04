@@ -47,7 +47,7 @@ main = do
       "create project"  -> createAuthorAction
       "delete project"  -> deleteProjectAction
       "delete author"  -> deleteProjectAction
-      _               -> undefined
+      _               -> putStrLn "Unreachable"
   else
     putStrLn "Argument invalid"
 
