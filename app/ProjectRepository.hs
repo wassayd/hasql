@@ -16,7 +16,8 @@ module ProjectRepository(
   projectSchema,
   getAllProject,
   createProject,
-  deleteProject
+  deleteProject,
+  updateProject
 ) where
 
 import Database ( dbConnection, printErr, printRes, runStatement  )

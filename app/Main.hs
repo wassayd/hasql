@@ -13,7 +13,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 
 module Main where
-import ProjectRepository (getAllProject, createProject, deleteProject)
+import ProjectRepository (getAllProject, createProject, deleteProject, updateProject)
 import Rel8
 import Database (runqry)
 import AuthorRepository (getAllAuthor, createAuthor, deleteAuthor)
@@ -46,7 +46,8 @@ main = do
       "create author"   -> createAuthorAction
       "create project"  -> createAuthorAction
       "delete project"  -> deleteProjectAction
-      "delete author"  -> deleteProjectAction
+      "delete author"   -> deleteProjectAction
+      "update project"  -> updateProjectAction
       _               -> putStrLn "Unreachable"
   else
     putStrLn "Argument invalid"
@@ -67,7 +68,11 @@ createProjectAction = do
   name <- inputAction "Project Name" 
   createProject authorId name
 
- 
+updateProjectAction :: IO ()
+updateProjectAction = do
+  idstr <- inputAction "Project Id"
+  updateProject (read idstr)
+
 deleteProjectAction :: IO ()
 deleteProjectAction = do
   idstr <- inputAction "Project Id"
