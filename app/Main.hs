@@ -16,7 +16,7 @@ module Main where
 import ProjectRepository (getAllProject, createProject, deleteProject, updateProject)
 import Rel8
 import Database (runqry)
-import AuthorRepository (getAllAuthor, createAuthor, deleteAuthor)
+import AuthorRepository (getAllAuthor, createAuthor, deleteAuthor, updateAuthor)
 import Classes
 import Data.Maybe (fromMaybe)
 import Configuration.Dotenv (loadFile, defaultConfig)
@@ -48,6 +48,7 @@ main = do
       "delete project"  -> deleteProjectAction
       "delete author"   -> deleteProjectAction
       "update project"  -> updateProjectAction
+      "update author"  -> updateProjectAction
       _               -> putStrLn "Unreachable"
   else
     putStrLn "Argument invalid"
@@ -72,6 +73,12 @@ updateProjectAction :: IO ()
 updateProjectAction = do
   idstr <- inputAction "Project Id"
   updateProject (read idstr)
+
+updateAuthorAction :: IO ()
+updateAuthorAction = do
+  idstr <- inputAction "Author Id"
+  updateAuthor (read idstr)
+
 
 deleteProjectAction :: IO ()
 deleteProjectAction = do
