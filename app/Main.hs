@@ -14,10 +14,8 @@
 
 module Main where
 import ProjectRepository (getAllProject, createProject, deleteProject, updateProject)
-import Rel8
 import Database (runqry)
 import AuthorRepository (getAllAuthor, createAuthor, deleteAuthor, updateAuthor)
-import Classes
 import Data.Maybe (fromMaybe)
 import Configuration.Dotenv (loadFile, defaultConfig)
 import System.Environment (getEnv)
@@ -35,7 +33,7 @@ isActionAuthorized "delete author"   = True
 isActionAuthorized "delete project"  = True
 isActionAuthorized _                 = False    
  
-main :: IO ()
+main :: IO () 
 main = do
   putStr "Argument : "
   action <- getLine
